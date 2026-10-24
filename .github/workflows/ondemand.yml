@@ -1,0 +1,27 @@
+name: dev1 DigiCert Code Scan Action
+
+
+on:
+  workflow_dispatch:
+
+jobs:
+  scan:
+    name: CodeQL + SBOM (local via act)
+    runs-on: ubuntu-latest
+
+    # CodeQL + trivy + upload-artifact need these.
+    permissions:
+      contents: read
+      actions: read
+      security-events: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run DigiCert Code Scan composite action
+        uses: digicert/digicert-code-monitoring-action@v2-dev
+        with:
+            host: https://wasabi-culpable-unloaded.ngrok-free.dev
+            api-key: ${{ secrets.DIGICERT_BACKEND_API_KEY }}
+      
