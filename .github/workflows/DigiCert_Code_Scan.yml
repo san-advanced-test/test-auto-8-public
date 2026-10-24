@@ -1,0 +1,44 @@
+# digicert-scan-template-version: 1
+name: DigiCert Code Scan
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit-sha:
+        description: 'Commit SHA to scan'
+        required: true
+      tag:
+        description: 'Release tag'
+        required: false
+        default: ''
+      release-name:
+        description: 'Release name'
+        required: false
+        default: ''
+      internal-release-id:
+        description: 'DCOne internal release id'
+        required: false
+        default: ''
+      branch:
+        description: 'Release source branch'
+        required: false
+        default: ''
+
+jobs:
+  analyze:
+    name: DigiCert Code Monitoring
+    runs-on: ubuntu-latest
+    steps:
+      - uses: digicert/digicert-code-monitoring-action@13fd9be957f90f0f45812eaeb098c4c76edb23d5
+        with:
+          host: "https://wasabi-culpable-unloaded.ngrok-free.dev"
+          api-key: ${{ secrets.DIGICERT_BACKEND_API_KEY }}
+          name: ${{ inputs['release-name'] }}
+          tag: ${{ inputs.tag }}
+          with-release: "true"
+          dc-release-id: ${{ inputs['internal-release-id'] }}
+          commit-sha: ${{ inputs['commit-sha'] }}
+          branch: ${{ inputs.branch }}
+          digicert-cdn: "https://pki-downloads.digicert.com/stm/snapshot/stmclients"
+          use-github-caching-service: "true"
+          use-binary-sha256-checksum: "true"
