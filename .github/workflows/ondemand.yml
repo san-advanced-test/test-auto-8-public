@@ -24,4 +24,7 @@ jobs:
         with:
             host: https://wasabi-culpable-unloaded.ngrok-free.dev
             api-key: ${{ secrets.DIGICERT_BACKEND_API_KEY }}
+            with-release: "true"
+            name: dev-release
+            tag: v1.1.0
       
